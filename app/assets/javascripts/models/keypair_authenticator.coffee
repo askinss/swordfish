@@ -10,4 +10,9 @@ class @KeypairAuthenticator
       data:     @keypair.publicKeyPem()
     ).done(@respond)
 
-  respond: ->
+  respond: (data) =>
+    @constructor.ajax(
+      type:     'PUT'
+      url:      '/auth/rsa'
+      data:     @keypair.decrypt(data)
+    )

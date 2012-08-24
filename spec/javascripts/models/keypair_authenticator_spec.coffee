@@ -20,10 +20,15 @@ describe 'KeypairAuthenticator', ->
         data: 'public key'
       )
 
+  describe 'respond', ->
     it 'sends decrypted challenge response to server', ->
+      spyOn(@keypair, 'publicKeyPem').andReturn('public key')
+      spyOn(@keypair, 'decrypt').andReturn('decrypted data')
       @authenticator.request()
-
       @deferred.resolve("something")
-
-      @
+      expect(@ajax).toHaveBeenCalledWith(
+        type: 'PUT'
+        url: '/auth/rsa'
+        data: 'decrypted data'
+      )
 
